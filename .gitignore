@@ -1,6 +1,6 @@
 # Ignorar DbContext
 **/Models/DB/MedexploraContext.cs
-
+appsettings.json
 
 
 # Compilación
