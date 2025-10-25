@@ -1,0 +1,6 @@
+@MedExploraAPI_HostAddress = http://localhost:5057
+
+GET {{MedExploraAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

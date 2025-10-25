@@ -1,0 +1,44 @@
+[
+  {
+    "ContainingType": "MedExploraAPI.Controllers.ParteCuerpoController",
+    "Method": "GetAll",
+    "RelativePath": "api/ParteCuerpo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MedExploraAPI.Controllers.ParteCuerpoController",
+    "Method": "Create",
+    "RelativePath": "api/ParteCuerpo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MedExploraAPI.DTO.ParteCuerpoCreateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MedExploraAPI.Controllers.ParteCuerpoController",
+    "Method": "GetById",
+    "RelativePath": "api/ParteCuerpo/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
