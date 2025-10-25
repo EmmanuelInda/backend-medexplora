@@ -1,3 +1,8 @@
+# Ignorar DbContext
+**/Models/DB/MedexploraContext.cs
+
+
+
 # Compilación
 bin/
 obj/
