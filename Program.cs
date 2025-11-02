@@ -17,9 +17,23 @@ builder.Services.AddScoped<ParteCuerpoServicio>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var app = builder.Build();
 
-    var app = builder.Build();
-
+// Verifica la conexión a la base de datos al iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MedexploraContext>();
+    try
+    {
+        db.Database.OpenConnection();
+        Console.WriteLine("Conexión a la base de datos exitosa.");
+        db.Database.CloseConnection();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($" Error al conectar con la base de datos: {ex.Message}");
+    }
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();

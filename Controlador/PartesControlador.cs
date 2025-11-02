@@ -23,8 +23,6 @@ namespace MedExploraAPI.Controllers
         //get by funcion
 
 
-
-
         // Endpoint para buscar partes del cuerpo por nombre
         [HttpGet("buscar")]
         public IActionResult Buscar([FromQuery] string nombre)
