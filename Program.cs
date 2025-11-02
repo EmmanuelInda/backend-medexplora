@@ -14,6 +14,7 @@ builder.Services.AddDbContext<MedexploraContext>(options =>
 // Agrega servicios al contenedor.
 builder.Services.AddControllers();
 builder.Services.AddScoped<ParteCuerpoServicio>();
+builder.Services.AddScoped<UsuarioServicio>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
