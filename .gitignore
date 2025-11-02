@@ -1,7 +1,4 @@
-# Ignorar DbContext
-**/Models/DB/MedexploraContext.cs
-appsettings.json
-Properties/launchSettings.json
+
 
 
 
