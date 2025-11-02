@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using MedExploraAPI.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace MedExploraAPI.Data;
+namespace MedExploraAPI.Models.DB;
 
 public partial class MedexploraContext : DbContext
 {

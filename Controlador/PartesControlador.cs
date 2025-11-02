@@ -23,39 +23,39 @@ namespace MedExploraAPI.Controllers
         //get by funcion
 
 
-        // Endpoint para buscar partes del cuerpo por nombre
-        [HttpGet("buscar")]
-        public IActionResult Buscar([FromQuery] string nombre)
-        {
-            var resultados = _service.BuscarPorNombre(nombre);
-            return Ok(resultados);
-        }
+        //// Endpoint para buscar partes del cuerpo por nombre
+        //[HttpGet("buscar")]
+        //public IActionResult Buscar([FromQuery] string nombre)
+        //{
+        //    var resultados = _service.BuscarPorNombre(nombre);
+        //    return Ok(resultados);
+        //}
 
-        // Endpoint para obtener todas las partes del cuerpo
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok(_service.GetAll());
-        }
+        //// Endpoint para obtener todas las partes del cuerpo
+        //[HttpGet]
+        //public IActionResult GetAll()
+        //{
+        //    return Ok(_service.GetAll());
+        //}
 
-        // Endpoint para obtener una parte del cuerpo por ID
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {   
+        //// Endpoint para obtener una parte del cuerpo por ID
+        //[HttpGet("{id}")]
+        //public IActionResult GetById(int id)
+        //{   
             
-            var parte = _service.GetById(id);
-            if (parte == null)
-                return NotFound(new { message = "Parte del cuerpo no encontrada" });
+        //    var parte = _service.GetById(id);
+        //    if (parte == null)
+        //        return NotFound(new { message = "Parte del cuerpo no encontrada" });
 
-            return Ok(parte);
-        }
+        //    return Ok(parte);
+        //}
 
-        // Endpoint para crear una nueva parte del cuerpo
-        [HttpPost]
-        public IActionResult Create([FromBody] ParteCuerpoCreateDTO dto)
-        {
-            var result = _service.Create(dto);
-            return Ok(result);
-        }
+        //// Endpoint para crear una nueva parte del cuerpo
+        //[HttpPost]
+        //public IActionResult Create([FromBody] ParteCuerpoCreateDTO dto)
+        //{
+        //    var result = _service.Create(dto);
+        //    return Ok(result);
+        //}
     }
 }
