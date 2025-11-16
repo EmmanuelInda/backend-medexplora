@@ -8,7 +8,7 @@ namespace MedExploraAPI.DTO
         public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El email es obligatorio")]
-        [EmailAddress(ErrorMessage = "El formato del email no es válido")]
+        [EmailAddress(ErrorMessage = "El formato del email no es vï¿½lido")]
         public string Email { get; set; }
 
         [Range(1, 120, ErrorMessage = "La edad debe ser un valor entre 1 y 120")]

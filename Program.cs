@@ -15,6 +15,11 @@ builder.Services.AddDbContext<MedexploraContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddScoped<ParteCuerpoServicio>();
 builder.Services.AddScoped<UsuarioServicio>();
+builder.Services.AddScoped<BodyPartServicio>();
+builder.Services.AddScoped<ModelServicio>();
+builder.Services.AddScoped<HotspotServicio>();
+builder.Services.AddScoped<MediaAssetServicio>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
