@@ -19,6 +19,10 @@ builder.Services.AddScoped<BodyPartServicio>();
 builder.Services.AddScoped<ModelServicio>();
 builder.Services.AddScoped<HotspotServicio>();
 builder.Services.AddScoped<MediaAssetServicio>();
+builder.Services.AddScoped<RegionServicio>();
+builder.Services.AddScoped<SystemServicio>();
+builder.Services.AddScoped<SynonymServicio>();
+builder.Services.AddScoped<RelatedPartServicio>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
