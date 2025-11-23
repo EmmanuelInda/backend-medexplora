@@ -22,31 +22,32 @@ namespace MedExploraAPI.Servicio
                 .Select(MapToDTO);  // mapear en memoria usando método de instancia
         }
 
+        // obtener bodypart por id
         public BodyPartDTO? GetById(int id)
         {
-            var p = _context.BodyParts
-                .AsNoTracking()
-                .FirstOrDefault(x => x.Id == id);
+            var p = _context.BodyParts 
+                .AsNoTracking()         // evitar el seguimiento de cambios
+                .FirstOrDefault(x => x.Id == id); // buscar por id
 
-            return p == null ? null : MapToDTO(p);
+            return p == null ? null : MapToDTO(p); // mapear a DTO si se encuentra
         }
 
         public IEnumerable<BodyPartDTO> GetByParentId(int parentId)
         {
-            return _context.BodyParts
-                .Where(p => p.ParentId == parentId)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
+            return _context.BodyParts // acceder a la tabla BodyParts
+                .Where(p => p.ParentId == parentId) // filtrar por ParentId
+                .Select(p => MapToDTO(p)) // mapear a DTO
+                .AsNoTracking() // evitar el seguimiento de cambios
+                .ToList(); // ejecutar la consulta y devolver la lista
         }
 
         public BodyPartDTO? GetBySlug(string slug)
         {
             var p = _context.BodyParts
                 .AsNoTracking()
-                .FirstOrDefault(p => p.Slug == slug);
+                .FirstOrDefault(p => p.Slug == slug); // buscar por slug
 
-            return p == null ? null : MapToDTO(p);
+            return p == null ? null : MapToDTO(p); // mapear a DTO si se encuentra
         }
 
         public IEnumerable<BodyPartDTO> GetByNameEs(string name)
@@ -148,8 +149,10 @@ namespace MedExploraAPI.Servicio
                 .ToList();
         }
 
+        // crear nuevo bodypart
         public BodyPartDTO Create(BodyPartCreateDTO dto)
         {
+            // mapear DTO a entidad
             var nuevo = new BodyPart
             {
                 ParentId = dto.ParentId,
@@ -170,12 +173,14 @@ namespace MedExploraAPI.Servicio
                 UpdatedAt = DateTime.Now
             };
 
+            // agregar a la base de datos
             _context.BodyParts.Add(nuevo);
             _context.SaveChanges();
 
             return GetById(nuevo.Id)!;
         }
 
+        // actualizar bodypart existente
         public BodyPartDTO? Update(int id, BodyPartCreateDTO dto)
         {
             var body = _context.BodyParts.FirstOrDefault(p => p.Id == id);

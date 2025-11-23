@@ -15,12 +15,14 @@ namespace MedExploraAPI.Controllers
             _servicio = servicio;
         }
 
+        // obtener todos los modelos
         [HttpGet]
         public IActionResult GetAll()
         {
             return Ok(_servicio.GetAll());
         }
 
+        // obtener modelo por id
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -29,6 +31,7 @@ namespace MedExploraAPI.Controllers
             return Ok(r);
         }
 
+        //  crear nuevo modelo
         [HttpPost]
         public IActionResult Create([FromBody] ModelCreateDTO dto)
         {
@@ -36,6 +39,7 @@ namespace MedExploraAPI.Controllers
             return Ok(r);
         }
 
+        // actualizar modelo por id
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] ModelCreateDTO dto)
         {
@@ -44,6 +48,7 @@ namespace MedExploraAPI.Controllers
             return Ok(r);
         }
 
+        // borrar modelo por id
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

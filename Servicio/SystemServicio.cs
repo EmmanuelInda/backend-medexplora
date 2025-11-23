@@ -1,5 +1,5 @@
 using MedExploraAPI.DTO;
-using MedExploraAPI.Models.DB; // Ojo: System de .NET puede chocar con tu modelo System. Usa alias si pasa.
+using MedExploraAPI.Models.DB; 
 using Microsoft.EntityFrameworkCore;
 using DBSystem = MedExploraAPI.Models.DB.System; // Alias para evitar conflicto
 

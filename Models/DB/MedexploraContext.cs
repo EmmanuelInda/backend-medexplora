@@ -18,6 +18,12 @@ public partial class MedexploraContext : DbContext
 
     public virtual DbSet<BodyPart> BodyParts { get; set; }
 
+    public virtual DbSet<BodySection> BodySections { get; set; }
+
+    public virtual DbSet<ExamStep> ExamSteps { get; set; }
+
+    public virtual DbSet<ExamType> ExamTypes { get; set; }
+
     public virtual DbSet<Hotspot> Hotspots { get; set; }
 
     public virtual DbSet<MediaAsset> MediaAssets { get; set; }
@@ -27,6 +33,8 @@ public partial class MedexploraContext : DbContext
     public virtual DbSet<Region> Regions { get; set; }
 
     public virtual DbSet<RelatedPart> RelatedParts { get; set; }
+
+    public virtual DbSet<SectionExam> SectionExams { get; set; }
 
     public virtual DbSet<Synonym> Synonyms { get; set; }
 
@@ -136,6 +144,112 @@ public partial class MedexploraContext : DbContext
                 .HasForeignKey(d => d.SystemCode)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("fk_bp_system");
+        });
+
+        modelBuilder.Entity<BodySection>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("body_sections")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.BodyPartId, "fk_section_part");
+
+            entity.HasIndex(e => e.Slug, "slug").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.BodyPartId)
+                .HasColumnType("int(11)")
+                .HasColumnName("body_part_id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_at");
+            entity.Property(e => e.NameEn)
+                .HasMaxLength(160)
+                .HasColumnName("name_en");
+            entity.Property(e => e.NameEs)
+                .HasMaxLength(160)
+                .HasColumnName("name_es");
+            entity.Property(e => e.Slug)
+                .HasMaxLength(96)
+                .HasColumnName("slug");
+            entity.Property(e => e.SortOrder)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("int(11)")
+                .HasColumnName("sort_order");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_at");
+
+            entity.HasOne(d => d.BodyPart).WithMany(p => p.BodySections)
+                .HasForeignKey(d => d.BodyPartId)
+                .HasConstraintName("fk_section_part");
+        });
+
+        modelBuilder.Entity<ExamStep>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("exam_steps")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.SectionExamId, "fk_step_section_exam");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.DetailEn)
+                .HasColumnType("text")
+                .HasColumnName("detail_en");
+            entity.Property(e => e.DetailEs)
+                .HasColumnType("text")
+                .HasColumnName("detail_es");
+            entity.Property(e => e.LabelEn)
+                .HasMaxLength(200)
+                .HasColumnName("label_en");
+            entity.Property(e => e.LabelEs)
+                .HasMaxLength(200)
+                .HasColumnName("label_es");
+            entity.Property(e => e.SectionExamId)
+                .HasColumnType("int(11)")
+                .HasColumnName("section_exam_id");
+            entity.Property(e => e.StepOrder)
+                .HasColumnType("int(11)")
+                .HasColumnName("step_order");
+
+            entity.HasOne(d => d.SectionExam).WithMany(p => p.ExamSteps)
+                .HasForeignKey(d => d.SectionExamId)
+                .HasConstraintName("fk_step_section_exam");
+        });
+
+        modelBuilder.Entity<ExamType>(entity =>
+        {
+            entity.HasKey(e => e.Code).HasName("PRIMARY");
+
+            entity
+                .ToTable("exam_types")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.Property(e => e.Code)
+                .HasMaxLength(32)
+                .HasColumnName("code");
+            entity.Property(e => e.NameEn)
+                .HasMaxLength(80)
+                .HasColumnName("name_en");
+            entity.Property(e => e.NameEs)
+                .HasMaxLength(80)
+                .HasColumnName("name_es");
+            entity.Property(e => e.SortOrder)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("int(11)")
+                .HasColumnName("sort_order");
         });
 
         modelBuilder.Entity<Hotspot>(entity =>
@@ -306,6 +420,53 @@ public partial class MedexploraContext : DbContext
             entity.HasOne(d => d.TargetPart).WithMany(p => p.RelatedPartTargetParts)
                 .HasForeignKey(d => d.TargetPartId)
                 .HasConstraintName("fk_rel_tgt");
+        });
+
+        modelBuilder.Entity<SectionExam>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("section_exams")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => e.ExamTypeCode, "fk_se_exam_type");
+
+            entity.HasIndex(e => new { e.SectionId, e.ExamTypeCode }, "uq_sec_exam").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.ExamTypeCode)
+                .HasMaxLength(32)
+                .HasColumnName("exam_type_code");
+            entity.Property(e => e.SectionId)
+                .HasColumnType("int(11)")
+                .HasColumnName("section_id");
+            entity.Property(e => e.SourceRef)
+                .HasMaxLength(255)
+                .HasColumnName("source_ref");
+            entity.Property(e => e.SummaryEn)
+                .HasColumnType("text")
+                .HasColumnName("summary_en");
+            entity.Property(e => e.SummaryEs)
+                .HasColumnType("text")
+                .HasColumnName("summary_es");
+            entity.Property(e => e.TitleEn)
+                .HasMaxLength(160)
+                .HasColumnName("title_en");
+            entity.Property(e => e.TitleEs)
+                .HasMaxLength(160)
+                .HasColumnName("title_es");
+
+            entity.HasOne(d => d.ExamTypeCodeNavigation).WithMany(p => p.SectionExams)
+                .HasForeignKey(d => d.ExamTypeCode)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_se_exam_type");
+
+            entity.HasOne(d => d.Section).WithMany(p => p.SectionExams)
+                .HasForeignKey(d => d.SectionId)
+                .HasConstraintName("fk_se_section");
         });
 
         modelBuilder.Entity<Synonym>(entity =>

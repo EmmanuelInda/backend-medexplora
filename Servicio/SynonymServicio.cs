@@ -20,7 +20,7 @@ namespace MedExploraAPI.Servicio
             return s == null ? null : MapToDTO(s);
         }
 
-        // Extra útil: buscar por bodyPartId
+        // Extra ï¿½til: buscar por bodyPartId
         public IEnumerable<SynonymDTO> GetByBodyPart(int bodyPartId)
         {
             return _context.Synonyms.Where(s => s.BodyPartId == bodyPartId).AsNoTracking().Select(MapToDTO).ToList();

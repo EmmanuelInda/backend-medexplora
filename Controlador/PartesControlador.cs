@@ -2,6 +2,8 @@
 using MedExploraAPI.Servicio;
 using Microsoft.AspNetCore.Mvc;
 
+
+
 // controlador para manejar las solicitudes relacionadas con las partes del cuerpo
 namespace MedExploraAPI.Controllers
 {

@@ -11,8 +11,11 @@ namespace MedExploraAPI.Controllers
         private readonly RelatedPartServicio _servicio;
         public RelatedPartController(RelatedPartServicio servicio) { _servicio = servicio; }
 
+        // obtener todas las partes relacionadas
         [HttpGet] public IActionResult GetAll() => Ok(_servicio.GetAll());
 
+
+        //  obtener parte relacionada por id
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -20,6 +23,7 @@ namespace MedExploraAPI.Controllers
             return r == null ? NotFound() : Ok(r);
         }
 
+        // crear nueva parte relacionada
         [HttpPost]
         public IActionResult Create([FromBody] RelatedPartCreateDTO dto)
         {
@@ -27,6 +31,7 @@ namespace MedExploraAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = r.Id }, r);
         }
 
+        // actualizar parte relacionada por id
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] RelatedPartCreateDTO dto)
         {
@@ -34,6 +39,7 @@ namespace MedExploraAPI.Controllers
             return r == null ? NotFound() : Ok(r);
         }
 
+        // borrar parte relacionada por id
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) => _servicio.Delete(id) ? NoContent() : NotFound();
     }

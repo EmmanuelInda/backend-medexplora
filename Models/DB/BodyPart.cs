@@ -39,6 +39,8 @@ public partial class BodyPart
 
     public DateTime UpdatedAt { get; set; }
 
+    public virtual ICollection<BodySection> BodySections { get; set; } = new List<BodySection>();
+
     public virtual ICollection<Hotspot> Hotspots { get; set; } = new List<Hotspot>();
 
     public virtual ICollection<BodyPart> InverseParent { get; set; } = new List<BodyPart>();
