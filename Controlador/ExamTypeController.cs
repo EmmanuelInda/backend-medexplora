@@ -28,7 +28,7 @@ namespace MedExploraAPI.Controllers
                 var e = _servicio.Create(dto);
                 return CreatedAtAction(nameof(GetByCode), new { code = e.Code }, e);
             }
-            catch { return BadRequest("Error al crear (posible código duplicado)"); }
+            catch { return BadRequest("Error al crear (posible codigo duplicado)"); }
         }
 
         [HttpPut("{code}")]
