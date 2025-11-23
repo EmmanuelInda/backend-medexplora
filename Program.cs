@@ -23,6 +23,8 @@ builder.Services.AddScoped<RegionServicio>();
 builder.Services.AddScoped<SystemServicio>();
 builder.Services.AddScoped<SynonymServicio>();
 builder.Services.AddScoped<RelatedPartServicio>();
+builder.Services.AddScoped<ExamTypeServicio>();
+builder.Services.AddScoped<SectionExamServicio>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
