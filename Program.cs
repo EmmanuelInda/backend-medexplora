@@ -25,7 +25,7 @@ builder.Services.AddScoped<SynonymServicio>();
 builder.Services.AddScoped<RelatedPartServicio>();
 builder.Services.AddScoped<ExamTypeServicio>();
 builder.Services.AddScoped<SectionExamServicio>();
-builder.Services.AddScoped<BodySectionServicio>();  
+
 builder.Services.AddScoped<ExamStepServicio>();
 
 builder.Services.AddEndpointsApiExplorer();

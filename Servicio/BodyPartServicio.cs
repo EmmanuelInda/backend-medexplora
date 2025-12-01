@@ -13,146 +13,33 @@ namespace MedExploraAPI.Servicio
             _context = context;
         }
 
+
+        // Get All Body Parts
         public IEnumerable<BodyPartDTO> GetAll()
         {
             return _context.BodyParts
-                
+                .Include(bp => bp.BodySections)
                 .AsNoTracking()
-                .ToList()           // trae entidades a memoria
-                .Select(MapToDTO);  // mapear en memoria usando método de instancia
+                .ToList()
+                .Select(MapToDTO);
         }
 
-        // obtener bodypart por id
+        // Get Body Part by Id
+
         public BodyPartDTO? GetById(int id)
         {
-            var p = _context.BodyParts 
-                .AsNoTracking()         // evitar el seguimiento de cambios
-                .FirstOrDefault(x => x.Id == id); // buscar por id
-
-            return p == null ? null : MapToDTO(p); // mapear a DTO si se encuentra
-        }
-
-        public IEnumerable<BodyPartDTO> GetByParentId(int parentId)
-        {
-            return _context.BodyParts // acceder a la tabla BodyParts
-                .Where(p => p.ParentId == parentId) // filtrar por ParentId
-                .Select(p => MapToDTO(p)) // mapear a DTO
-                .AsNoTracking() // evitar el seguimiento de cambios
-                .ToList(); // ejecutar la consulta y devolver la lista
-        }
-
-        public BodyPartDTO? GetBySlug(string slug)
-        {
             var p = _context.BodyParts
+                .Include(bp => bp.BodySections)
                 .AsNoTracking()
-                .FirstOrDefault(p => p.Slug == slug); // buscar por slug
+                .FirstOrDefault(x => x.Id == id);
 
-            return p == null ? null : MapToDTO(p); // mapear a DTO si se encuentra
+            return p == null ? null : MapToDTO(p);
         }
 
-        public IEnumerable<BodyPartDTO> GetByNameEs(string name)
-        {
-            return _context.BodyParts
-                .Where(p => p.NameEs.Contains(name))
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
 
-        public IEnumerable<BodyPartDTO> GetByNameEn(string name)
-        {
-            return _context.BodyParts
-                .Where(p => p.NameEn.Contains(name))
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetBySide(string side)
-        {
-            return _context.BodyParts
-                .Where(p => p.Side == side)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetBySex(string sex)
-        {
-            return _context.BodyParts
-                .Where(p => p.Sex == sex)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetBySystemCode(string systemCode)
-        {
-            return _context.BodyParts
-                .Where(p => p.SystemCode == systemCode)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetByRegionCode(string regionCode)
-        {
-            return _context.BodyParts
-                .Where(p => p.RegionCode == regionCode)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetByModelId(int modelId)
-        {
-            return _context.BodyParts
-                .Where(p => p.ModelId == modelId)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetByMeshKey(string meshKey)
-        {
-            return _context.BodyParts
-                .Where(p => p.MeshKey == meshKey)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetBySortOrder(int sortOrder)
-        {
-            return _context.BodyParts
-                .Where(p => p.SortOrder == sortOrder)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetByIsVisible(bool isVisible)
-        {
-            return _context.BodyParts
-                .Where(p => p.IsVisible == isVisible)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<BodyPartDTO> GetCreatedAfter(DateTime date)
-        {
-            return _context.BodyParts
-                .Where(p => p.CreatedAt >= date)
-                .Select(p => MapToDTO(p))
-                .AsNoTracking()
-                .ToList();
-        }
-
-        // crear nuevo bodypart
+        // Create Body Part
         public BodyPartDTO Create(BodyPartCreateDTO dto)
         {
-            // mapear DTO a entidad
             var nuevo = new BodyPart
             {
                 ParentId = dto.ParentId,
@@ -169,18 +56,18 @@ namespace MedExploraAPI.Servicio
                 MeshKey = dto.MeshKey,
                 SortOrder = dto.SortOrder,
                 IsVisible = dto.IsVisible,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
-            // agregar a la base de datos
             _context.BodyParts.Add(nuevo);
             _context.SaveChanges();
 
             return GetById(nuevo.Id)!;
         }
 
-        // actualizar bodypart existente
+
+        // Update Body Part
         public BodyPartDTO? Update(int id, BodyPartCreateDTO dto)
         {
             var body = _context.BodyParts.FirstOrDefault(p => p.Id == id);
@@ -200,19 +87,76 @@ namespace MedExploraAPI.Servicio
             body.MeshKey = dto.MeshKey;
             body.SortOrder = dto.SortOrder;
             body.IsVisible = dto.IsVisible;
-            body.UpdatedAt = DateTime.Now;
+            body.UpdatedAt = DateTime.UtcNow;
 
             _context.SaveChanges();
-
             return GetById(id);
         }
 
+        // Delete Body Part
         public bool Delete(int id)
         {
             var body = _context.BodyParts.FirstOrDefault(p => p.Id == id);
             if (body == null) return false;
 
             _context.BodyParts.Remove(body);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+
+        // Body Section 
+        public BodySectionDTO AddSection(int bodyPartId, BodySectionCreateDTO dto)
+        {
+            var entity = new BodySection
+            {
+                BodyPartId = bodyPartId,
+                Slug = dto.Slug,
+                NameEs = dto.NameEs,
+                NameEn = dto.NameEn,
+                SortOrder = dto.SortOrder,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.BodySections.Add(entity);
+            _context.SaveChanges();
+
+            return new BodySectionDTO
+            {
+                Id = entity.Id,
+                BodyPartId = entity.BodyPartId,
+                Slug = entity.Slug,
+                NameEs = entity.NameEs,
+                NameEn = entity.NameEn,
+                SortOrder = entity.SortOrder,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
+            };
+        }
+
+        public bool UpdateSection(int sectionId, BodySectionCreateDTO dto)
+        {
+            var entity = _context.BodySections.FirstOrDefault(s => s.Id == sectionId);
+            if (entity == null) return false;
+
+            entity.Slug = dto.Slug;
+            entity.NameEs = dto.NameEs;
+            entity.NameEn = dto.NameEn;
+            entity.SortOrder = dto.SortOrder;
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteSection(int sectionId)
+        {
+            var entity = _context.BodySections.FirstOrDefault(s => s.Id == sectionId);
+            if (entity == null) return false;
+
+            _context.BodySections.Remove(entity);
             _context.SaveChanges();
             return true;
         }
@@ -237,7 +181,20 @@ namespace MedExploraAPI.Servicio
                 SortOrder = p.SortOrder,
                 IsVisible = p.IsVisible,
                 CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt
+                UpdatedAt = p.UpdatedAt,
+                Sections = p.BodySections
+                    .Select(s => new BodySectionDTO
+                    {
+                        Id = s.Id,
+                        BodyPartId = s.BodyPartId,
+                        Slug = s.Slug,
+                        NameEs = s.NameEs,
+                        NameEn = s.NameEn,
+                        SortOrder = s.SortOrder,
+                        CreatedAt = s.CreatedAt,
+                        UpdatedAt = s.UpdatedAt
+                    })
+                    .ToList()
             };
         }
     }
